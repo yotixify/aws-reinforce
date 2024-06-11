@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: IAM452 Sample CloudFormation
+Resources:
+  SampleIamRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: "ec2.amazonaws.com"
+            Action: ["sts:AssumeRole"]
+      Path: /
+      Policies:
+        - PolicyName: my-ec2-permissions
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "ec2:RunInstances"
+                  - "lambda:CreateFunction"
+                  - "lambda:InvokeFunction"
+                  - "dynamodb:Scan"
+                  - "dynamodb:Query"
+                  - "dynamodb:UpdateItem"
+                  - "dynamodb:GetItem"
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - "iam:PassRole"
+                Resource: "arn:aws:iam::*:role/my-sensitive-roles/adminrole452"
+  
+  EC2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - !Ref EC2Role
