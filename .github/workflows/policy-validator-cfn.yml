@@ -1,4 +1,3 @@
-cat <<-"EOF" > .github/workflows/main.yaml
 name: cfn-policy-validator-workflow
 
 on:
